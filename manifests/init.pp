@@ -1,4 +1,7 @@
-
+# == Class: opencsw
+#
+# Module to manage opencsw repository for Solaris
+#
 class opencsw (
   $proxy                   = undef,
   $package_source          = 'http://get.opencsw.org/now',
@@ -8,7 +11,7 @@ class opencsw (
   $exclude_pattern         = undef,
   $gpg_homedir             = undef,
   $maxpkglist              = 100000,
-  $mirrors                 = undef,
+  $mirrors                 = 'USE_DEFAULTS',
   $noncsw                  = false,
   $pkgaddopts              = undef,
   $pkgliststyle            = 2,
@@ -20,6 +23,15 @@ class opencsw (
   $use_md5                 = false,
   $wgetopts                = undef,
 ) {
+
+  if $::osfamily == 'Solaris' {
+    if $::kernelrelease != '5.10' {
+      fail("opencsw is only supported on Solaris 5.10. Your kernelrelease is identified as <${::kernelrelease}>.")
+    }
+  }
+  else {
+    fail("opencsw supports osfamily Solaris. Detected osfamily is <${::osfamily}>.")
+  }
 
   validate_string($proxy)
 
@@ -50,6 +62,13 @@ class opencsw (
 
   validate_re($maxpkglist, '^(\d)+$',
     "opencsw::maxpkglist is <${maxpkglist}>. Must be a number.")
+
+  if $mirrors == 'USE_DEFAULTS' {
+    $mirrors_real = [ 'http://mirror.opencsw.org/opencsw/testing' ]
+  } else {
+    $mirrors_real = $mirrors
+  }
+  validate_array($mirrors_real)
 
   if type($noncsw) == 'String' {
     $noncsw_real = str2bool($noncsw)
@@ -101,6 +120,8 @@ class opencsw (
 
   if $proxy {
     $proxy_opt = "-x ${proxy}"
+  } else {
+    $proxy_opt = undef
   }
 
   File {
@@ -110,8 +131,8 @@ class opencsw (
   }
 
   file { 'pkgutil_admin_file':
-    path   => '/var/sadm/install/admin/opencsw-noask',
     ensure => 'file',
+    path   => '/var/sadm/install/admin/opencsw-noask',
     source => 'puppet:///modules/opencsw/opencsw-noask',
   }
 
@@ -122,16 +143,9 @@ class opencsw (
   }
 
   file { 'pkgutil_conf':
-    path    => '/etc/opt/csw/pkgutil.conf',
     ensure  => file,
+    path    => '/etc/opt/csw/pkgutil.conf',
     content => template('opencsw/pkgutil.conf.erb'),
-    require => Exec['pkgutil_install'],
-  }
-
-  file { 'pkgutil_conf_opt':
-    path    => '/opt/csw/etc/pkgutil.conf',
-    ensure  => 'symlink',
-    target  => '/etc/opt/csw/pkgutil.conf',
     require => Exec['pkgutil_install'],
   }
 }
