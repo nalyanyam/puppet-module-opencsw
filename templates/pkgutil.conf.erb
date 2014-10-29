@@ -15,7 +15,7 @@
 # Tells your proxy server to disable caching during fetching
 # of the catalog and descriptions.
 # Default: true
-<% if @catalog_not_cached_real -%>
+<% if @catalog_not_cached_real != 'UNSET' -%>
 catalog_not_cached=<%= @catalog_not_cached_real %>
 <% else -%>
 #catalog_not_cached=true
@@ -26,7 +26,7 @@ catalog_not_cached=<%= @catalog_not_cached_real %>
 # if you want to disable automatic updates and 0 if you always want to
 # update the catalog.
 # Default: 14
-<% if @catalog_update -%>
+<% if @catalog_update != 'UNSET' -%>
 catalog_update=<%= @catalog_update %>
 <% else -%>
 #catalog_update=14
@@ -35,7 +35,7 @@ catalog_update=<%= @catalog_update %>
 # Filter out CSWcommon from --deptree output
 # Set this to true if you don't want to see lots of lines with CSWcommon.
 # Default: false
-<% if @deptree_filter_common_real -%>
+<% if @deptree_filter_common_real != 'UNSET' -%>
 deptree_filter_common=<%= @deptree_filter_common_real %>
 <% else -%>
 #deptree_filter_common=true
@@ -45,7 +45,7 @@ deptree_filter_common=<%= @deptree_filter_common_real %>
 # Space separated list of simple patterns that will exclude matching packages
 # when updating or installing.
 # Default: blank
-<% if @exclude_pattern -%>
+<% if @exclude_pattern != 'UNSET' -%>
 exclude_pattern=<%= @exclude_pattern %>
 <% else -%>
 #exclude_pattern=
@@ -57,7 +57,7 @@ exclude_pattern=<%= @exclude_pattern %>
 # NOTE: we recommend you install the CSWcswpki package for
 #       easiest handling of the keys
 # Default: blank
-<% if @gpg_homedir -%>
+<% if @gpg_homedir != 'UNSET' -%>
 gpg_homedir=<%= @gpg_homedir %>
 <% else -%>
 #gpg_homedir=
@@ -68,7 +68,7 @@ gpg_homedir=<%= @gpg_homedir %>
 # against cyclic dependencies in the catalog (packages that list each other
 # as dependencies) or pkgutil will not stop until memory is exhausted.
 # Default: 100000
-<% if @maxpkglist -%>
+<% if @maxpkglist != 'UNSET' -%>
 maxpkglist=<%= @maxpkglist %>
 <% else -%>
 #maxpkglist=100000
@@ -90,7 +90,7 @@ mirror=<%= mirror %>
 # NOTE: this also affects options like -c/C, however it's easy to filter the
 #       output if wanted, e.g. "pkgutil -C CSW".
 # Default: false
-<% if @noncsw_real -%>
+<% if @noncsw_real != 'UNSET' -%>
 noncsw=<%= @noncsw_real %>
 <% else -%>
 #noncsw=true
@@ -103,7 +103,7 @@ noncsw=<%= @noncsw_real %>
 #             does not have the same option.
 # WARNING: do not modify this unless you know what you're doing.
 # Default: blank
-<% if @pkgaddopts -%>
+<% if @pkgaddopts != 'UNSET' -%>
 pkgaddopts=<%= @pkgaddopts %>
 <% else -%>
 #pkgaddopts=-G -S
@@ -115,7 +115,7 @@ pkgaddopts=<%= @pkgaddopts %>
 # line which is easier to read. 2 is the same as 1 but also displays which
 # distribution a package comes from, e.g. unstable or stable.
 # Default: 2
-<% if @pkgliststyle -%>
+<% if @pkgliststyle != 'UNSET' -%>
 pkgliststyle=<%= @pkgliststyle %>
 <% else -%>
 #pkgliststyle=2
@@ -126,7 +126,7 @@ pkgliststyle=<%= @pkgliststyle %>
 #             only in the global zone, set it to -O nozones.
 # WARNING: do not modify this unless you know what you're doing.
 # Default: blank
-<% if @pkgrmopts -%>
+<% if @pkgrmopts != 'UNSET' -%>
 pkgrmopts=<%= @pkgrmopts %>
 <% else -%>
 #pkgrmopts=-O nozones
@@ -135,7 +135,7 @@ pkgrmopts=<%= @pkgrmopts %>
 # Root path to use
 # WARNING: do not modify this unless you know what you're doing.
 # Default: /
-<% if @root_path -%>
+<% if @root_path != 'UNSET' -%>
 root_path=<%= @root_path %>
 <% else -%>
 #root_path=/a
@@ -145,7 +145,7 @@ root_path=<%= @root_path %>
 # You can choose to not show the list of current packages to get less output
 # when doing operations.
 # Default: true
-<% if @show_current_real -%>
+<% if @show_current_real != 'UNSET' -%>
 show_current=<%= @show_current_real %>
 <% else -%>
 #show_current=true
@@ -157,7 +157,7 @@ show_current=<%= @show_current_real %>
 # error condition from a hook and it is a site dependent choice whether or
 # not to honour this condition. Set to true to enable.
 # Default: false
-<% if @stop_on_hook_soft_error_real -%>
+<% if @stop_on_hook_soft_error_real != 'UNSET' -%>
 stop_on_hook_soft_error=<%= @stop_on_hook_soft_error_real %>
 <% else -%>
 #stop_on_hook_soft_error=false
@@ -168,12 +168,12 @@ stop_on_hook_soft_error=<%= @stop_on_hook_soft_error_real %>
 # NOTE: it doesn't make sense to use md5 but not gpg so your options should be:
 #       1. both disabled, 2. gpg enabled, 3. both enabled.
 # Default: false, false
-<% if @use_gpg_real -%>
+<% if @use_gpg_real != 'UNSET' -%>
 use_gpg=<%= @use_gpg_real %>
 <% else -%>
 #use_gpg=true
 <% end -%>
-<% if @use_md5_real -%>
+<% if @use_md5_real != 'UNSET' -%>
 use_md5=<%= @use_md5_real %>
 <% else -%>
 #use_md5=true
@@ -184,7 +184,7 @@ use_md5=<%= @use_md5_real %>
 # "--execute http_proxy=http://proxy.foo.bar".
 # WARNING: do not modify this unless you know what you're doing.
 # Default: blank
-<% if @wgetopts -%>
+<% if @wgetopts != 'UNSET' -%>
 wgetopts=<%= @wgetopts %>
 <% else -%>
 #wgetopts=-U pkgutil

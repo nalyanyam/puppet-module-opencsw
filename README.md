@@ -36,32 +36,32 @@ package_source
 catalog_not_cached
 ------------------
 
-- *Default*: 'true'
+- *Default*: 'UNSET'
 
 catalog_update
 --------------
 
-- *Default*: 14
+- *Default*: 'UNSET'
 
 deptree_filter_common
 ---------------------
 
-- *Default*: 'false'
+- *Default*: 'UNSET'
 
 exclude_pattern
 ---------------
 
-- *Default*: 'undef'
+- *Default*: 'UNSET'
 
 gpg_homedir
 -----------
 
-- *Default*: 'undef'
+- *Default*: 'UNSET'
 
 maxpkglist
 ----------
 
-- *Default*: 100000
+- *Default*: 'UNSET'
 
 mirrors
 -------
@@ -71,49 +71,49 @@ mirrors
 noncsw
 ------
 
-- *Default*: 'false'
+- *Default*: 'UNSET'
 
 pkgaddopts
 ----------
 
-- *Default*: 'undef'
+- *Default*: 'UNSET'
 
 pkgliststyle
 ------------
 
-- *Default*: 2
+- *Default*: 'UNSET'
 
 pkgrmopts
 ---------
 
-- *Default*: 'undef'
+- *Default*: 'UNSET'
 
 root_path
 ---------
 
-- *Default*: '/'
+- *Default*: 'UNSET'
 
 show_current
 ------------
 
-- *Default*: 'true'
+- *Default*: 'UNSET'
 
 stop_on_hook_soft_error
 -----------------------
 
-- *Default*: 'false'
+- *Default*: 'UNSET'
 
 use_gpg
 -------
 
-- *Default*: 'false'
+- *Default*: 'UNSET'
 
 use_md5
 -------
 
-- *Default*: 'false'
+- *Default*: 'UNSET'
 
 wgetopts
 --------
 
-- *Default*: 'undef'
+- *Default*: 'UNSET'

@@ -5,23 +5,23 @@
 class opencsw (
   $proxy                   = undef,
   $package_source          = 'http://get.opencsw.org/now',
-  $catalog_not_cached      = true,
-  $catalog_update          = 14,
-  $deptree_filter_common   = false,
-  $exclude_pattern         = undef,
-  $gpg_homedir             = undef,
-  $maxpkglist              = 100000,
+  $catalog_not_cached      = 'UNSET',
+  $catalog_update          = 'UNSET',
+  $deptree_filter_common   = 'UNSET',
+  $exclude_pattern         = 'UNSET',
+  $gpg_homedir             = 'UNSET',
+  $maxpkglist              = 'UNSET',
   $mirrors                 = 'USE_DEFAULTS',
-  $noncsw                  = false,
-  $pkgaddopts              = undef,
-  $pkgliststyle            = 2,
-  $pkgrmopts               = undef,
-  $root_path               = '/',
-  $show_current            = true,
-  $stop_on_hook_soft_error = false,
-  $use_gpg                 = false,
-  $use_md5                 = false,
-  $wgetopts                = undef,
+  $noncsw                  = 'UNSET',
+  $pkgaddopts              = 'UNSET',
+  $pkgliststyle            = 'UNSET',
+  $pkgrmopts               = 'UNSET',
+  $root_path               = 'UNSET',
+  $show_current            = 'UNSET',
+  $stop_on_hook_soft_error = 'UNSET',
+  $use_gpg                 = 'UNSET',
+  $use_md5                 = 'UNSET',
+  $wgetopts                = 'UNSET',
 ) {
 
   if $::osfamily == 'Solaris' {
@@ -37,31 +37,41 @@ class opencsw (
 
   validate_string($package_source)
 
-  if type($catalog_not_cached) == 'String' {
-    $catalog_not_cached_real = str2bool($catalog_not_cached)
-  } else {
-    $catalog_not_cached_real = $catalog_not_cached
+  if $catalog_not_cached != 'UNSET' {
+    if type($catalog_not_cached) == 'String' {
+      $catalog_not_cached_real = str2bool($catalog_not_cached)
+    } else {
+      $catalog_not_cached_real = $catalog_not_cached
+    }
+    validate_bool($catalog_not_cached_real)
   }
-  validate_bool($catalog_not_cached_real)
 
-  validate_re($catalog_update, '^(\d)+$',
-    "opencsw::catalog_update is <${catalog_update}>. Must be a number.")
-
-  if type($deptree_filter_common) == 'String' {
-    $deptree_filter_common_real = str2bool($deptree_filter_common)
-  } else {
-    $deptree_filter_common_real = $deptree_filter_common
+  if $catalog_update != 'UNSET' {
+    validate_re($catalog_update, '^(\d)+$',
+      "opencsw::catalog_update is <${catalog_update}>. Must be a number.")
   }
-  validate_bool($deptree_filter_common_real)
 
-  validate_string($exclude_pattern)
+  if $deptree_filter_common != 'UNSET' {
+    if type($deptree_filter_common) == 'String' {
+      $deptree_filter_common_real = str2bool($deptree_filter_common)
+    } else {
+      $deptree_filter_common_real = $deptree_filter_common
+    }
+    validate_bool($deptree_filter_common_real)
+  }
 
-  if $gpg_homedir != undef {
+  if $exclude_pattern != 'UNSET' {
+    validate_string($exclude_pattern)
+  }
+
+  if $gpg_homedir != 'UNSET' {
     validate_absolute_path($gpg_homedir)
   }
 
-  validate_re($maxpkglist, '^(\d)+$',
-    "opencsw::maxpkglist is <${maxpkglist}>. Must be a number.")
+  if $maxpkglist != 'UNSET' {
+    validate_re($maxpkglist, '^(\d)+$',
+      "opencsw::maxpkglist is <${maxpkglist}>. Must be a number.")
+  }
 
   if $mirrors == 'USE_DEFAULTS' {
     $mirrors_real = [ 'http://mirror.opencsw.org/opencsw/testing' ]
@@ -70,53 +80,71 @@ class opencsw (
   }
   validate_array($mirrors_real)
 
-  if type($noncsw) == 'String' {
-    $noncsw_real = str2bool($noncsw)
-  } else {
-    $noncsw_real = $noncsw
+  if $noncsw != 'UNSET' {
+    if type($noncsw) == 'String' {
+      $noncsw_real = str2bool($noncsw)
+    } else {
+      $noncsw_real = $noncsw
+    }
+    validate_bool($noncsw_real)
   }
-  validate_bool($noncsw_real)
 
-  validate_string($pkgaddopts)
+  if $pkgaddopts != 'UNSET' {
+    validate_string($pkgaddopts)
+  }
 
-  validate_re($pkgliststyle, '^(\d)+$',
-    "opencsw::pkgliststyle is <${pkgliststyle}>. Must be a number.")
+  if $pkgliststyle != 'UNSET' {
+    validate_re($pkgliststyle, '^(\d)+$',
+      "opencsw::pkgliststyle is <${pkgliststyle}>. Must be a number.")
+  }
 
-  validate_string($pkgrmopts)
+  if $pkgrmopts != 'UNSET' {
+    validate_string($pkgrmopts)
+  }
 
-  if $root_path != undef {
+  if $root_path != 'UNSET' {
     validate_absolute_path($root_path)
   }
 
-  if type($show_current) == 'String' {
-    $show_current_real = str2bool($show_current)
-  } else {
-    $show_current_real = $show_current
+  if $show_current != 'UNSET' {
+    if type($show_current) == 'String' {
+      $show_current_real = str2bool($show_current)
+    } else {
+      $show_current_real = $show_current
+    }
+    validate_bool($show_current_real)
   }
-  validate_bool($show_current_real)
 
-  if type($stop_on_hook_soft_error) == 'String' {
-    $stop_on_hook_soft_error_real = str2bool($stop_on_hook_soft_error)
-  } else {
-    $stop_on_hook_soft_error_real = $stop_on_hook_soft_error
+  if $stop_on_hook_soft_error != 'UNSET' {
+    if type($stop_on_hook_soft_error) == 'String' {
+      $stop_on_hook_soft_error_real = str2bool($stop_on_hook_soft_error)
+    } else {
+      $stop_on_hook_soft_error_real = $stop_on_hook_soft_error
+    }
+    validate_bool($stop_on_hook_soft_error_real)
   }
-  validate_bool($stop_on_hook_soft_error_real)
 
-  if type($use_gpg) == 'String' {
-    $use_gpg_real = str2bool($use_gpg)
-  } else {
-    $use_gpg_real = $use_gpg
+  if $use_gpg != 'UNSET' {
+    if type($use_gpg) == 'String' {
+      $use_gpg_real = str2bool($use_gpg)
+    } else {
+      $use_gpg_real = $use_gpg
+    }
+    validate_bool($use_gpg_real)
   }
-  validate_bool($use_gpg_real)
 
-  if type($use_md5) == 'String' {
-    $use_md5_real = str2bool($use_md5)
-  } else {
-    $use_md5_real = $use_md5
+  if $use_md5 != 'UNSET' {
+    if type($use_md5) == 'String' {
+      $use_md5_real = str2bool($use_md5)
+    } else {
+      $use_md5_real = $use_md5
+    }
+    validate_bool($use_md5_real)
   }
-  validate_bool($use_md5_real)
 
-  validate_string($wgetopts)
+  if $wgetopts != 'UNSET' {
+    validate_string($wgetopts)
+  }
 
   if $proxy {
     $proxy_opt = "-x ${proxy}"
@@ -124,16 +152,13 @@ class opencsw (
     $proxy_opt = undef
   }
 
-  File {
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
   file { 'pkgutil_admin_file':
     ensure => 'file',
     path   => '/var/sadm/install/admin/opencsw-noask',
     source => 'puppet:///modules/opencsw/opencsw-noask',
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
   }
 
   exec { 'pkgutil_install':
@@ -146,6 +171,9 @@ class opencsw (
     ensure  => file,
     path    => '/etc/opt/csw/pkgutil.conf',
     content => template('opencsw/pkgutil.conf.erb'),
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
     require => Exec['pkgutil_install'],
   }
 }
