@@ -21,6 +21,12 @@ catalog_not_cached=<%= @catalog_not_cached_real %>
 #catalog_not_cached=true
 <% end -%>
 
+#Recommended change to above
+<% if @catalog_not_cached_real != nil -%>
+  catalog_not_cached <%= @catalog_not_cached_real %>
+<% end -%>
+# End recommended change
+
 # Catalog update interval
 # Number of days between automatic catalog updates. Special cases are -1
 # if you want to disable automatic updates and 0 if you always want to
